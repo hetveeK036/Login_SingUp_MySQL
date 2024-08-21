@@ -7,12 +7,15 @@ import Home from './Home'
 function App() {
 
   return (
-    <div className='flex flex-col font-serif bg-gray-200 items-center justify-center '>
+    <div className='flex flex-col font-serif items-center justify-center '>
       <BrowserRouter>
       <Routes>
-        <Route path='/' element={<LoginRegister/>}/>
-        <Route path='/register' element={<LoginRegister/>}/>
+        {/* <Route path='/' element={<LoginRegister/>}/> */}
+        {/* <Route path='/register' element={<LoginRegister/>}/> */}
         <Route path='/Home' element={<Home/>}/>
+        <Route path="/" element={<Home />} />
+        <Route path="/login-register" element={<LoginRegister />} />
+
       </Routes>
       </BrowserRouter>
     </div>

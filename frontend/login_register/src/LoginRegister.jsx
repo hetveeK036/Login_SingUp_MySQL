@@ -18,7 +18,7 @@ const LoginRegister = () => {
     // axios.post('http://localhost:8081/register', { username, email, password })
 
     axios
-      .post("http://localhost:8081/register", { username, email, password })
+      .post("http://localhost:3000/register", { username, email, password })
       .then((res) => {
         console.log(res);
         navigate("/home");
@@ -38,7 +38,7 @@ const LoginRegister = () => {
   const login = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:8081/login", values)
+      .post("http://localhost:3000/login", values)
 
       .then((res) => {
         if (res.data.Status === "Success") {
@@ -49,13 +49,13 @@ const LoginRegister = () => {
         console.log("login page : ", res);
       })
       .catch((err) => console.log("error  = ", err));
-
+      setValues('')
     console.log("click on Login");
   };
 
   return (
     <div
-      className="bg-white m-auto relative overflow-hidden min-h-96 p-10 rounded-[40px] w-1/2  shadow-lg "
+      className="bg-white m-auto relative overflow-hidden min-h-96 p-10 rounded-[40px] w-1/2 border-2 border-pink-500 shadow-lg top-56 "
       id="content"
     >
       {/* Register Form  */}
@@ -96,14 +96,16 @@ const LoginRegister = () => {
                 placeholder="Enter your password"
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className=" w-4/5 p-2 mb-3 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className=" w-4/5 p-2 mb-3 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
               />
             </div>
             <div className="mt-7">
               <button
                 type="submit"
                 id="registerBtn"
-                className="w-1/3  border-white text-white text-xl font-thin p-2 tracking-wider bg-pink-600 rounded-md "
+                // className="w-1/3 rounded-[0px_20px] border-white text-white text-xl font-thin p-2 tracking-wider bg-pink-600 hover:bg-gradient-to-r from-pink-300 to-pink-700"
+                className=" w-3/5 m-3 p-2 rounded-[0px_20px] border-white text-white text-xl font-thin tracking-wider  bg-pink-600 hover:bg-gradient-to-r from-pink-300 to-pink-700"
+              
               >
                 {" "}
                 Submit
@@ -146,7 +148,7 @@ const LoginRegister = () => {
                   setValues({ ...values, password: e.target.value })
                 }
                 required
-                className="w-4/5 p-2 mb-3 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="w-4/5 p-2 mb-3 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
               />
             </div>
             <div className="flex justify-evenly">
@@ -170,7 +172,7 @@ const LoginRegister = () => {
               <button
                 type="submit"
                 id="LoginBtn"
-                className=" w-3/5 m-3 p-2 rounded-[0px_20px] border-white text-white text-xl font-thin tracking-wider bg-pink-600 hover:font-semibold hover:border-violet-50 "
+                className=" w-3/5 m-3 p-2 rounded-[0px_20px] border-white text-white text-xl font-thin tracking-wider  bg-pink-600 hover:bg-gradient-to-r from-pink-300 to-pink-700"
               >
                 Submit
               </button>
@@ -181,13 +183,13 @@ const LoginRegister = () => {
       {/* ------------ Switch penal ---------- */}
 
       <div
-        className={`switch-content absolute top-0 right-[50%] w-1/2 h-full bg-pink-500 p-2 text-white overflow-hidden  z-50  transition-all duration-200 ease-in-out  ${
+        className={`switch-content absolute top-0 right-[50%] w-1/2 h-full bg-pink-500 p-2 text-white overflow-hidden z-50 transition-all duration-200 ease-in-out  ${
           isRegisterActive
             ? "translate-x-0 rounded-[40px_0px_0px_40px] "
             : "translate-x-full rounded-[0_40px_40px_0]"
         } `}
       >
-        <div className="switch  h-full relative transform translateX(0) transition-all ease-in-out duration-200 active:translateX[50%] ">
+        <div className="switch h-full relative transform translateX(0) transition-all ease-in-out duration-100 active:translateX[50%] ">
           {isRegisterActive ? (
             <div className="switch-penal float-left absolute text-center py-7 w-full h-full top-0 flex flex-col justify-center transform translate-x-0:translate-x-[-200%] transition-all ease-in-out active:translate-x-0 ">
               <h1 className="text-2xl mb-4 uppercase text-center">
@@ -200,7 +202,7 @@ const LoginRegister = () => {
                 <button
                   id="login"
                   onClick={() => setIsRegisterActive(!isRegisterActive)}
-                  className="w-1/3 m-3 p-2 rounded-[20px_5px] text-pink-600 items-center text-xl font-thin  tracking-wider bg-white hover:font-semibold"
+                  className="w-1/3 m-3 p-2 rounded-[20px_5px] text-pink-600 items-center text-xl font-thin  tracking-wider bg-white hover:font-semibold hover:bg-transparent hover:text-white hover:border-solid hover:border-b-2 hover:border-r-2 hover:border-white "
                 >
                   Login
                 </button>
@@ -216,7 +218,7 @@ const LoginRegister = () => {
                 <button
                   id="register"
                   onClick={() => setIsRegisterActive(!isRegisterActive)}
-                  className="w-1/3 m-3 p-2 rounded-[20px_5px] text-pink-600 tracking-* text-xl font-thin items-center bg-white hover:bg-transparent hover:text-white hover:border-solid hover:border-2 hover:border-white"
+                  className="w-1/3 m-3 p-2 rounded-[20px_5px] text-pink-600 tracking-* text-xl font-thin items-center bg-white hover:bg-transparent hover:text-white hover:border-solid hover:border-b-2 hover:border-white hover:border-r-2"
                 >
                   Register
                 </button>
