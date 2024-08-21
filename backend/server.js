@@ -13,47 +13,78 @@ app.use(cors());
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password1: "1234",
+  password: "1234", // Corrected the field name to 'password'
   database: "db",
 });
 
-const salt = 8; // limit of password
+const saltRounds = 8; // Number of salt rounds for bcrypt
+
+// app.post("/register", (req, res) => {
+//   // const sql = "INSERT INTO user (`username`, `email`, `password`) VALUES (?)";
+//   const sql =
+//     "INSERT INTO user (`username`, `email`, `password`) VALUES (?, ?, ?)";
+
+//   const values = [req.body.username, req.body.email, hash];
+//   db.query(sql, values, (err, result) => {
+//     if (err) console.log("Error:", err);
+//     else return res.json(result);
+//   });
+
+//   bcrypt.hash(req.body.password.toString(), saltRounds, (err, hash) => {
+//     if (err) return res.json("Error");
+//     const values = [req.body.username, req.body.email, hash];
+//     db.query(sql, [values], (err, result) => {
+//       if (err) console.log("Error:", err);
+//       else return res.json(result);
+//     });
+//   });
+// });
+
 app.post("/register", (req, res) => {
-  const sql = "INSERT INTO user (`username`, `email`, `password`) VALUES(?)";
-  bcrypt.hash(req.body.password.toString(), salt, (err, hash) => {
-    if (err) return res.json("Error");
-    const values = [res.body.username, res.body.email, hash];
+  const sql = "INSERT INTO user (`username`, `email`, `password`) VALUES (?)";
+  bcrypt.hash(req.body.password.toString(), saltRounds, (err, hash) => {
+    if (err) {
+      console.error("Hashing error:", err);
+      return res.status(500).json({ Error: "Hashing error" });
+    }
+    
+    const values = [req.body.username, req.body.email, hash];
+    
     db.query(sql, [values], (err, result) => {
-      if (err) console.log("error :-", err);
-      else return res.json(result);
+      if (err) {
+        console.error("Database error:", err); // Log the error to understand what went wrong
+        return res.status(500).json({ Error: "Database error" });
+      } else {
+        console.log("User registered successfully:", result); // Log success
+        return res.status(201).json({ Success: "User registered successfully", result });
+      }
     });
   });
 });
 
+
+// Login route
 app.post("/login", (req, res) => {
-  const sql = "SELECT * FROM user WHERE `email` = ? ";
+  const sql = "SELECT * FROM user WHERE `email` = ?";
   db.query(sql, [req.body.email], (err, result) => {
-    if (err) return res.json({ Error: "Error" });
-    else {
-      if (result.length > 0) {
-        bcrypt.compare(
-          req.body.password.toString(),
-          result[0],
-          password,
-          (err, response) => {
-            if (err) return res.json({ Error: "Error" });
-            if (response) return res.json({ Status: "Success" });
-            else return res.json({ Error: "Wrong Password" });
-          }
-        );
-      } else {
-        return res.json({ Error: "email not existing" });
-      }
+    if (err) return res.json({ Error: "Error in query" });
+    if (result.length > 0) {
+      bcrypt.compare(
+        req.body.password.toString(),
+        result[0].password,
+        (err, response) => {
+          if (err) return res.json({ Error: "Error in bcrypt comparison" });
+          if (response) return res.json({ Status: "Success" });
+          else return res.json({ Error: "Wrong Password" });
+        }
+      );
+    } else {
+      return res.json({ Error: "Email not found" });
     }
   });
 });
 
-const PORT = 3306;
+const PORT = 3000; // Changed the port to avoid conflict
 app.listen(PORT, () => {
-  console.log("listing ");
+  console.log(`Server is running on port ${PORT}`);
 });
