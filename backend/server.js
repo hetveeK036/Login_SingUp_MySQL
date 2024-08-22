@@ -19,27 +19,6 @@ const db = mysql.createConnection({
 
 const saltRounds = 8; // Number of salt rounds for bcrypt
 
-// app.post("/register", (req, res) => {
-//   // const sql = "INSERT INTO user (`username`, `email`, `password`) VALUES (?)";
-//   const sql =
-//     "INSERT INTO user (`username`, `email`, `password`) VALUES (?, ?, ?)";
-
-//   const values = [req.body.username, req.body.email, hash];
-//   db.query(sql, values, (err, result) => {
-//     if (err) console.log("Error:", err);
-//     else return res.json(result);
-//   });
-
-//   bcrypt.hash(req.body.password.toString(), saltRounds, (err, hash) => {
-//     if (err) return res.json("Error");
-//     const values = [req.body.username, req.body.email, hash];
-//     db.query(sql, [values], (err, result) => {
-//       if (err) console.log("Error:", err);
-//       else return res.json(result);
-//     });
-//   });
-// });
-
 app.post("/register", (req, res) => {
   const sql = "INSERT INTO user (`username`, `email`, `password`) VALUES (?)";
   bcrypt.hash(req.body.password.toString(), saltRounds, (err, hash) => {
@@ -61,7 +40,6 @@ app.post("/register", (req, res) => {
     });
   });
 });
-
 
 // Login route
 app.post("/login", (req, res) => {
