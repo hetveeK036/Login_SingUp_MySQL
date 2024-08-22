@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [react()],
   css: {
     postcss: {
+      base: '/Login_SingUp_MySQL/',
       plugins: [tailwindcss()],
     },
   }
